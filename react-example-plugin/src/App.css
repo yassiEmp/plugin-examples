@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face{
+    font-family: "grotesk";
+    src: url("./assets/HankenGrotesk-SemiBold.ttf")
+}
+
+.shad{
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.100);
+}
+
+.clip{
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.customInput::-webkit-inner-spin-button,
+.customInput::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+    display: none;
+}
+
+@keyframes getOut{
+    from {transform: translateX(0);}
+    to {transform: translateX(100%);}
+}
+@keyframes getOut2{
+    from {transform: translateX(-100%);}
+    to {transform: translateX(0);}
+}
