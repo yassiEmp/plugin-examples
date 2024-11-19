@@ -119,7 +119,7 @@ const PluginUI = () => {
         alt="Background"
         className="absolute w-[360px] rounded-[10px]"
       />
-      <div className="w-[360px] h-[570px] border-gray-700 border rounded-[10px] font-[grotesk] relative flex flex-col items-center justify-around overflow-hidden">
+      <div className="w-[360px] h-[640px] border-gray-700 border rounded-[10px] font-[grotesk] relative flex flex-col items-center justify-around overflow-hidden">
         <div className="">
           <h2 className="text-2xl capitalize p-4 underline">data type</h2>
           <Option content="name" key={"name"} />
