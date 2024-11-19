@@ -37,7 +37,7 @@ function SvgChevron(props: { rotate: string; handler: any }) {
 function Option(props: { content: string; key: string }) {
   return (
     <label
-      className="w-[292px] h-[50px] gap-5 bg-slate-300 rounded-xl flex justify-start items-center p-4 m-4 border-gray-200 border"
+      className="w-[292px] h-[50px] gap-3 bg-slate-300 rounded-xl flex justify-start items-center p-4 m-4 border-gray-200 border"
       key={props.key}
     >
       <input type="radio" name="options" id={props.key} className="simple" />
@@ -111,15 +111,15 @@ function SimpleOption(props: {
 
 const PluginUI = () => {
   const [tab, setTab] = useState(1);
-  const [advance,setAdvance] = useState(false) 
+  const [advance,setAdvance] = useState(false)
   return (
-    <>
+    <div className="bg-white">
       <img
         src={background}
         alt="Background"
-        className="absolute -z-10 w-[360px] rounded-[10px]"
+        className="absolute w-[360px] rounded-[10px]"
       />
-      <div className="w-[360px] h-[640px] border-gray-700 border rounded-[10px] font-[grotesk] relative flex flex-col items-center justify-around overflow-hidden">
+      <div className="w-[360px] h-[570px] border-gray-700 border rounded-[10px] font-[grotesk] relative flex flex-col items-center justify-around overflow-hidden">
         <div className="">
           <h2 className="text-2xl capitalize p-4 underline">data type</h2>
           <Option content="name" key={"name"} />
@@ -135,7 +135,7 @@ const PluginUI = () => {
             ,Qranverse ,BibleVerse ,Q&Aquestion ”
           </p>
         </div>
-        <div className=" w-[360px] h-[130px] bg-white bottom-0 border-t-2 shad flex flex-col justify-end items-center">
+        <div className=" w-[360px] h-[160px] bg-white bottom-0 border-t-2 shad flex flex-col justify-center items-center">
           <button className="w-2/3 bg-[#4D7298] p-2 rounded-[6px] flex justify-center border-gray-500 border">
             <p className="text-xl">generate</p>
           </button>
@@ -257,7 +257,7 @@ const PluginUI = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
