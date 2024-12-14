@@ -3,7 +3,7 @@ import "./App.css";
 import { ReactEventHandler, useEffect, useRef, useState } from "react";
 import { simpleName, simpleParagraph } from "./generator";
 import { words } from "./sources/words";
-import { movies, actorNames } from "./sources/movie";
+// import { movies, actorNames } from "./sources/movie";
 function SvgChevron(props: { rotate: string; handler: any }) {
   return (
     <div
@@ -176,12 +176,12 @@ const PluginUI = () => {
     return;
   }
 
-  function paramsGen(params: {
-    paragraph: { parType: string; maxWord: number; minWord: number };
-    name: { namType: string; size: number };
-  }): string {
-    return "";
-  }
+  // function paramsGen(params: {
+  //   paragraph: { parType: string; maxWord: number; minWord: number };
+  //   name: { namType: string; size: number };
+  // }): string {
+  //   return "";
+  // }
 
   function optHandler(elmName: string, value: string) {
     switch (elmName){
