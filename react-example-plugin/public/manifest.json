@@ -1,0 +1,18 @@
+{
+    "name": "Content generator",
+    "description": "This plugin enhances user experience by allowing you to generate fictional detail for your ui.",
+    "version": "1.0.0",
+    "author": "yassi",
+    "code": "plugin.js",
+    "icon": "icon.png",
+    "permissions": [
+      "content:read",
+      "content:write",
+      "library:read",
+      "library:write",
+      "user:read",
+      "comment:read",
+      "comment:write",
+      "allow:downloads"
+    ]
+}
