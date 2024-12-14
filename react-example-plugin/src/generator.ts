@@ -47,11 +47,11 @@ export class simpleParagraph{
     return randomSubArray[Math.floor(Math.random() * randomSubArray.length)];
   }
   
-  generateRandomParagraph(words:[string[]], sentenceCount = 5) {
+  generateRandomParagraph(words:string[][], sentenceCount = 5 , sentenceMinMax = {min:5,max:15}) {
     const paragraph = [];
   
     for (let i = 0; i < sentenceCount; i++) {
-      const sentenceLength = Math.floor(Math.random() * 10) + 5; // Random length between 5 and 15 words
+      const sentenceLength = Math.floor(Math.random() * sentenceMinMax.max ) + sentenceMinMax.min; // Random length between 5 and 15 words
       const sentence = [];
   
       for (let j = 0; j < sentenceLength; j++) {

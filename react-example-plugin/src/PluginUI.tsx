@@ -1,7 +1,9 @@
 import background from "./assets/background.svg";
 import "./App.css";
-import { useRef, useState } from "react";
-
+import { ReactEventHandler, useEffect, useRef, useState } from "react";
+import { simpleName, simpleParagraph } from "./generator";
+import { words } from "./sources/words";
+import { movies, actorNames } from "./sources/movie";
 function SvgChevron(props: { rotate: string; handler: any }) {
   return (
     <div
@@ -34,28 +36,57 @@ function SvgChevron(props: { rotate: string; handler: any }) {
   );
 }
 
-function Option(props: { content: string; key: string }) {
+function Option(props: {
+  content: string;
+  keyDif: string;
+  handler: ReactEventHandler;
+}) {
   return (
     <label
       className="w-[292px] h-[50px] gap-3 bg-slate-300 rounded-xl flex justify-start items-center p-4 m-4 border-gray-200 border"
-      key={props.key}
+      key={props.keyDif}
     >
-      <input type="radio" name="options" id={props.key} className="simple" />
+      <input
+        type="radio"
+        name="options"
+        id={props.keyDif}
+        className="simple"
+        onClick={(ev) => {
+          props.handler(ev);
+        }}
+      />
       <p className="text-3xl">{props.content}</p>
     </label>
   );
 }
 
-function SelectOption(props: { content: string; options: string[] }) {
+function SelectOption(props: {
+  content: string;
+  options: string[];
+  handler: (elmName: string, value: string) => void;
+}) {
+  const selected = useRef<HTMLSelectElement>(null);
   return (
     <div className="w-[292px] h-[50px] gap-3 bg-slate-300 rounded-xl flex justify-start items-center p-4 border-gray-200 border ">
       <div className="w-[20px] h-[20px] rounded-full bg-[#4D7298] flex justify-center items-center">
         1
       </div>
       <p className="w-28 text-left">{props.content}</p>
-      <select name="type" id="paragraph" className="rounded text-red-600">
-        {props.options.map((option) => {
-          return <option>{option}</option>;
+      <select
+        name="type"
+        id="paragraph"
+        className="rounded text-red-600"
+        onChange={() => {
+          props.handler(props.content, selected.current?.value ?? "");
+        }}
+        ref={selected}
+      >
+        {props.options.map((option, ind) => {
+          return (
+            <option key={ind} value={option}>
+              {option}
+            </option>
+          );
         })}
       </select>
     </div>
@@ -67,6 +98,7 @@ function SimpleOption(props: {
   unit: string;
   position: number;
   default: number;
+  handler: (value: string, elmName: string) => void;
 }) {
   const counter = useRef<HTMLInputElement>(null);
 
@@ -77,9 +109,11 @@ function SimpleOption(props: {
     switch (arrow) {
       case 1:
         counter.current.stepUp();
+        props.handler(counter.current?.value ?? "", props.content);
         break;
       case 2:
         counter.current.stepDown();
+        props.handler(counter.current?.value ?? "", props.content);
         break;
     }
   };
@@ -111,7 +145,102 @@ function SimpleOption(props: {
 
 const PluginUI = () => {
   const [tab, setTab] = useState(1);
-  const [advance,setAdvance] = useState(false)
+
+  const [advance, setAdvance] = useState(false);
+
+  const [mode, setMode] = useState("name");
+
+  const [params, setParams] = useState<{
+    paragraph: { parType: string; maxWord: number; minWord: number };
+    name: { namType: string; size: number };
+  }>({
+    paragraph: { parType: "", maxWord: 10, minWord: 2 },
+    name: { namType: "", size: 5 }
+  });
+
+  useEffect(() => {
+    console.log(mode);
+    const text = generate(mode);
+    parent.postMessage({ type: "create-text", content: text }, "*");
+  }, [mode]);
+
+  function generate(param: string) {
+    switch (param) {
+      case "name":
+        return genName.genRandomFirstName("non binary");
+      case "user":
+        return genName.genRandomFullName();
+      case "paragraph":
+        return genPar.generateRandomParagraph(words);
+    }
+    return;
+  }
+
+  function paramsGen(params: {
+    paragraph: { parType: string; maxWord: number; minWord: number };
+    name: { namType: string; size: number };
+  }): string {
+    return "";
+  }
+
+  function optHandler(elmName: string, value: string) {
+    switch (elmName){
+      case "Paragraph type":
+        setParams(prevParams => ({
+          ...prevParams,
+          paragraph: {
+            parType: value,
+            maxWord: prevParams.paragraph.maxWord,
+            minWord: prevParams.paragraph.minWord,
+          }
+        }));
+        console.log(params)
+    }
+    console.log("name :", elmName, " value :", value);
+  }
+
+  function spOptHandler(value: string, elmName: string) {
+    console.log(elmName, ": ", value);
+  }
+
+  let nameGen, userGen, pargGen;
+
+  nameGen = () => {
+    setMode("name");
+    console.log(generate(mode));
+  };
+
+  userGen = () => {
+    setMode("user");
+    console.log(generate(mode));
+  };
+
+  pargGen = () => {
+    setMode("paragraph");
+    console.log(generate(mode));
+  };
+
+  const genName = new simpleName();
+
+  const genPar = new simpleParagraph();
+
+  function Exemple() {
+    return (
+      <div className="w-[304px] ">
+        <p className="font-bold font-[grotesk] underline">Exemple</p>
+        <div>
+          <p className="p-2 text-wrap truncate w-full h-28 rounded text-[#4d4d4d] border-2">
+            {generate(mode)}
+          </p>
+        </div>
+        <button className="w-2/3 bg-[#4D7298] p-2 rounded-[6px] flex justify-center border-gray-500 border mt-2 m-auto">
+          <p className="text-xl">generate</p>
+        </button>
+      </div>
+    );
+  }
+
+  // parent.postMessage("","*")
   return (
     <div className="bg-white">
       <img
@@ -122,9 +251,9 @@ const PluginUI = () => {
       <div className="w-[360px] h-[640px] border-gray-700 border rounded-[10px] font-[grotesk] relative flex flex-col items-center justify-around overflow-hidden">
         <div className="">
           <h2 className="text-2xl capitalize p-4 underline">data type</h2>
-          <Option content="name" key={"name"} />
-          <Option content="User name" key={"full name"} />
-          <Option content="paragraph" key={"paragraph"} />
+          <Option content="name" keyDif={"name"} handler={nameGen} />
+          <Option content="User name" keyDif={"full name"} handler={userGen} />
+          <Option content="paragraph" keyDif={"paragraph1"} handler={pargGen} />
         </div>
         <div className="flex flex-col h-24 justify-around">
           <h2 className="h-[29px] text-[24px] relative text-center ">
@@ -135,24 +264,31 @@ const PluginUI = () => {
             ,Qranverse ,BibleVerse ,Q&Aquestion ”
           </p>
         </div>
-        <div className=" w-[360px] h-[160px] bg-white bottom-0 border-t-2 shad flex flex-col justify-center items-center">
-          <button className="w-2/3 bg-[#4D7298] p-2 rounded-[6px] flex justify-center border-gray-500 border">
-            <p className="text-xl">generate</p>
-          </button>
-          <p className="text-[#444444]">OR</p>
-          <button className="w-2/3 bg-[#54428E] p-2 rounded-[6px] flex justify-center border-gray-500 border"
-          onClick={()=>{setAdvance(!advance)}}>
+        <div className=" w-[360px] h-[90px] bg-white bottom-0 border-t-2 shad flex flex-col justify-center items-center">
+          <button
+            className="w-2/3 bg-[#54428E] p-2 rounded-[6px] flex justify-center border-gray-500 border"
+            onClick={() => {
+              setAdvance(!advance);
+            }}
+          >
             <p className="text-xl">advance</p>
           </button>
         </div>
         <div className="absolute w-[360px] h-[640px] bg-black clip translate-x-full"></div>
-        <div className={`absolute w-[360px] h-[640px] top-0 bg-slate-50 flex flex-col justify-center items-center transition-transform ${advance?"translate-x-0":"translate-x-full"}`}>
-          <button className="absolute top-2 left-2" 
-          onClick={()=>{setAdvance(!advance)}}
+        <div
+          className={`absolute w-[360px] h-[640px] top-0 bg-slate-50 flex flex-col justify-center items-center transition-transform ${
+            advance ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <button
+            className="absolute top-2 left-2"
+            onClick={() => {
+              setAdvance(!advance);
+            }}
           >
             <div className="w-[25px] h-[25px] grid place-items-center relative top-0 left-0">
               <div className="absolute w-full h-1 rounded bg-black origin-center rotate-45"></div>
-              <div className="absolute w-full h-1 rounded bg-black origin-center -rotate-45"></div> 
+              <div className="absolute w-full h-1 rounded bg-black origin-center -rotate-45"></div>
             </div>
           </button>
           <div className="w-[90%] h-[90%] bg-slate-50 flex flex-col justify-around items-center ">
@@ -196,19 +332,22 @@ const PluginUI = () => {
                 <div className="flex flex-col justify-center items-center gap-2">
                   <SelectOption
                     content="Paragraph type"
-                    options={["verse", "lorem", "bible", "quran"]}
+                    options={["random", "verse", "bible", "quran"]}
+                    handler={optHandler}
                   />
                   <SimpleOption
                     content="max word size"
                     unit="letters"
                     position={2}
                     default={10}
+                    handler={spOptHandler}
                   />
                   <SimpleOption
                     content="min word size"
                     unit="letters"
                     position={3}
                     default={1}
+                    handler={spOptHandler}
                   />
                 </div>
               </div>
@@ -229,12 +368,14 @@ const PluginUI = () => {
                       "film name",
                       "serie name",
                     ]}
+                    handler={optHandler}
                   />
                   <SimpleOption
                     content="detail size"
                     unit="letters"
                     position={2}
                     default={10}
+                    handler={spOptHandler}
                   />
                 </div>
               </div>
@@ -243,17 +384,7 @@ const PluginUI = () => {
             )}
 
             {/* exemple */}
-            <div className="w-[304px] ">
-              <p className="font-bold font-[grotesk] underline">Exemple</p>
-              <div>
-                <p className="p-2 text-wrap truncate w-full h-28 rounded text-[#4d4d4d] border-2">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Dolore, corporis! Adipisci, quisquam deleniti explicabo quos
-                  dolores delectus molestiae sequi quis ipsum, numquam iusto
-                  provident incidunt minima voluptatum mollitia est voluptatem.
-                </p>
-              </div>
-            </div>
+            <Exemple />
           </div>
         </div>
       </div>
