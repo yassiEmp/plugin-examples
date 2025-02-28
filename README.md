@@ -1,48 +1,47 @@
-# Plugin examples
+# Penpot Plugin
 
-This collection of plugins is designed to showcase how to create plugins using popular frontend frameworks.
+## 🚀 Overview
+This is a plugin for [Penpot](https://penpot.app/) built using **React**. The plugin extends Penpot's capabilities, providing additional features and enhancing the design workflow.
 
-| Framework | Version\* |
-| --------- | --------- |
-| Angular   | 18.0.0    |
-| React     | 18.2.0    |
-| Vue       | 3.4.21    |
+## 🛠 Features
+- 🔧 Custom functionalities to enhance design productivity
+- 📡 Seamless integration with Penpot
+- ⚡ Built with React for a modern UI
 
-_\*: version we used in the examples._
+## 📌 Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/penpot-plugin.git
+   cd penpot-plugin
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-- For the full documentation go to: [Plugins](https://help.penpot.app/plugins/).
-- For the starter vanilla template go to [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template).
+## 🏗 Usage
+1. Open **Penpot** and enable plugin development mode.
+2. Load the plugin in Penpot.
+3. Use the plugin's UI to interact with your designs.
 
-## Start examples
+## 🏗 Tech Stack
+- **React** - Frontend framework
+- **TypeScript** *(optional)* - Static typing
+- **Vite/Webpack** - Development bundler
 
-Clone the repository with `git clone https://github.com/penpot/plugin-examples.git` and run the examples.
+## 📜 License
+This project is licensed under the **MIT License**.
 
-### Angular
+## 🤝 Contributing
+Feel free to submit **issues** or **pull requests** to improve this plugin!
 
-```bash
-cd angular-example-plugin
-npm install
-npm start
-```
+## 📬 Contact
+For questions or collaborations, reach out via GitHub or email.
 
-Plugin url: http://localhost:4401/manifest.json
+---
+Made with ❤️ for the Penpot community!
 
-### React
-
-```bash
-cd react-example-plugin
-npm install
-npm run dev
-```
-
-Plugin url: http://localhost:4402/manifest.json
-
-### Vue
-
-```bash
-cd vue-example-plugin
-npm install
-npm run dev
-```
-
-Plugin url: http://localhost:4403/manifest.json
